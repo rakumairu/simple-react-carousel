@@ -4,7 +4,8 @@ const App = () => {
     return (
         <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto', marginTop: 64 }}>
             <Carousel
-                show={2}
+                show={4}
+                isRepeating
             >
                 <div>
                     <div style={{padding: 8}}>

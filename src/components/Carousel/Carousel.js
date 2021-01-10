@@ -4,24 +4,36 @@ import './carousel.css'
 const Carousel = (props) => {
     const {children, show} = props
 
-    const [currentIndex, setCurrentIndex] = useState(0)
+    const [currentIndex, setCurrentIndex] = useState(props.isRepeating ? show : 0)
     const [length, setLength] = useState(children.length)
+    
+    const [isRepeating, setIsRepeating] = useState(props.isRepeating && children.length > show)
+    const [transitionEnabled, setTransitionEnabled] = useState(true)
 
     const [touchPosition, setTouchPosition] = useState(null)
 
     // Set the length to match current children from props
     useEffect(() => {
         setLength(children.length)
-    }, [children])
+        setIsRepeating(props.isRepeating && children.length > show)
+    }, [children, props.isRepeating, show])
+
+    useEffect(() => {
+        if (isRepeating) {
+            if (currentIndex === show || currentIndex === length) {
+                setTransitionEnabled(true)
+            }
+        }
+    }, [currentIndex, isRepeating, show, length])
 
     const next = () => {
-        if (currentIndex < (length - show)) {
+        if (isRepeating || currentIndex < (length - show)) {
             setCurrentIndex(prevState => prevState + 1)
         }
     }
 
     const prev = () => {
-        if (currentIndex > 0) {
+        if (isRepeating || currentIndex > 0) {
             setCurrentIndex(prevState => prevState - 1)
         }
     }
@@ -52,12 +64,41 @@ const Carousel = (props) => {
         setTouchPosition(null)
     }
 
+    const handleTransitionEnd = () => {
+        if (isRepeating) {
+            if (currentIndex === 0) {
+                setTransitionEnabled(false)
+                setCurrentIndex(length)
+            } else if (currentIndex === length + show) {
+                setTransitionEnabled(false)
+                setCurrentIndex(show)
+            }
+        }
+    }
+
+    const renderExtraPrev = () => {
+        let output = []
+        for (let index = 0; index < show; index++) {
+            output.push(children[length - 1 - index])
+        }
+        output.reverse()
+        return output
+    }
+
+    const renderExtraNext = () => {
+        let output = []
+        for (let index = 0; index < show; index++) {
+            output.push(children[index])
+        }
+        return output
+    }
+
     return (
         <div className="carousel-container">
             <div className="carousel-wrapper">
                 {/* You can alwas change the content of the button to other things */}
                 {
-                    currentIndex > 0 &&
+                    (isRepeating || currentIndex > 0) &&
                     <button onClick={prev} className="left-arrow">
                         &lt;
                     </button>
@@ -69,14 +110,26 @@ const Carousel = (props) => {
                 >
                     <div
                         className={`carousel-content show-${show}`}
-                        style={{ transform: `translateX(-${currentIndex * (100 / show)}%)` }}
+                        style={{
+                            transform: `translateX(-${currentIndex * (100 / show)}%)`,
+                            transition: !transitionEnabled ? 'none' : undefined,
+                        }}
+                        onTransitionEnd={() => handleTransitionEnd()}
                     >
+                        {
+                            (length > show && isRepeating) &&
+                            renderExtraPrev()
+                        }
                         {children}
+                        {
+                            (length > show && isRepeating) &&
+                            renderExtraNext()
+                        }
                     </div>
                 </div>
                 {/* You can alwas change the content of the button to other things */}
                 {
-                    currentIndex < (length - show) &&
+                    (isRepeating || currentIndex < (length - show)) &&
                     <button onClick={next} className="right-arrow">
                         &gt;
                     </button>
