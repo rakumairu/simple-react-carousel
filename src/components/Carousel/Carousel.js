@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './carousel.css'
 
 const Carousel = (props) => {
-    const {children} = props
+    const {children, show} = props
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const [length, setLength] = useState(children.length)
@@ -15,7 +15,7 @@ const Carousel = (props) => {
     }, [children])
 
     const next = () => {
-        if (currentIndex < (length - 1)) {
+        if (currentIndex < (length - show)) {
             setCurrentIndex(prevState => prevState + 1)
         }
     }
@@ -68,15 +68,15 @@ const Carousel = (props) => {
                     onTouchMove={handleTouchMove}
                 >
                     <div
-                        className="carousel-content"
-                        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                        className={`carousel-content show-${show}`}
+                        style={{ transform: `translateX(-${currentIndex * (100 / show)}%)` }}
                     >
                         {children}
                     </div>
                 </div>
                 {/* You can alwas change the content of the button to other things */}
                 {
-                    currentIndex < (length - 1) &&
+                    currentIndex < (length - show) &&
                     <button onClick={next} className="right-arrow">
                         &gt;
                     </button>
