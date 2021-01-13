@@ -5,7 +5,7 @@ const App = () => {
         <div style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto', marginTop: 64 }}>
             <Carousel
                 show={4}
-                isRepeating
+                infiniteLoop
             >
                 <div>
                     <div style={{padding: 8}}>
