@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Carousel from './components/Carousel/Carousel';
 import './components/Carousel/Carousel.css'
 
@@ -7,65 +6,25 @@ function App() {
   return (
     <div className="App">
       <Carousel
-        show={3}
+        show={2}
         infiniteLoop
         withIndicator
       >
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div>
-          <div style={{ padding: 8 }}>
-            <img src="https://placeimg.com/100/100/any" alt="placeholder" style={{ width: '100%' }} />
-          </div>
-        </div>
+      <h2 data-testid="carousel-item-1">Item 1</h2>
+      <h2 data-testid="carousel-item-2">Item 2</h2>
+      <h2 data-testid="carousel-item-3">Item 3</h2>
+      <h2 data-testid="carousel-item-1">Item 1</h2>
+      <h2 data-testid="carousel-item-2">Item 2</h2>
+      <h2 data-testid="carousel-item-3">Item 3</h2>
+      <h2 data-testid="carousel-item-1">Item 1</h2>
+      <h2 data-testid="carousel-item-2">Item 2</h2>
+      <h2 data-testid="carousel-item-3">Item 3</h2>
+      <h2 data-testid="carousel-item-1">Item 1</h2>
+      <h2 data-testid="carousel-item-2">Item 2</h2>
+      <h2 data-testid="carousel-item-3">Item 3</h2>
+      <h2 data-testid="carousel-item-1">Item 1</h2>
+      <h2 data-testid="carousel-item-2">Item 2</h2>
+      <h2 data-testid="carousel-item-3">Item 3</h2>
       </Carousel>
     </div>
   );

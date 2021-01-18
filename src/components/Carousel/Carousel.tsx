@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { Children } from 'react'
 
 export interface ICarouselProps {
   /**
    * Items that going to be showed
    */
-  children: React.ReactNode[]
+  children: React.ReactNode
 
   /**
    * Indicate how many to show at once
@@ -155,12 +155,12 @@ const Carousel = ({
   /**
    * Total item
    */
-  const length = React.useMemo(() => children.length, [children])
+  const length = React.useMemo(() => Children.count(children), [children])
 
   /**
    * Is the carousel repeating it's item
    */
-  const isRepeating = React.useMemo(() => infiniteLoop && children.length > show, [children, infiniteLoop, show])
+  const isRepeating = React.useMemo(() => infiniteLoop && Children.count(children) > show, [children, infiniteLoop, show])
 
   /**
    * Current Index Item of the Carousel
@@ -194,7 +194,7 @@ const Carousel = ({
       const active = indicatorContainerRef.current?.querySelector('.dots-active')
       if (active) {
         let index = active.getAttribute('data-index')
-        if (index !== null) {
+        if (index !== null && indicatorContainerRef.current?.scrollTo) {
           indicatorContainerRef.current?.scrollTo({
             left: ((Number(index) - 2) / 5) * 50,
             behavior: 'smooth',
@@ -286,7 +286,7 @@ const Carousel = ({
   const extraPreviousItems = React.useMemo(() => {
     let output = []
     for (let index = 0; index < show; index++) {
-      output.push(children[length - 1 - index])
+      output.push(Children.toArray(children)[length - 1 - index])
     }
     output.reverse()
     return output
@@ -298,7 +298,7 @@ const Carousel = ({
   const extraNextItems = React.useMemo(() => {
     let output = []
     for (let index = 0; index < show; index++) {
-      output.push(children[index])
+      output.push(Children.toArray(children)[index])
     }
     return output
   }, [children, show])
@@ -345,29 +345,38 @@ const Carousel = ({
 
   return (
     <div
+      data-testid="carousel-container"
       className={`carousel-container ${containerClassName || ''}`}
       {...containerProps}
     >
       <div
+        data-testid="carousel-wrapper"
         className={`carousel-wrapper ${wrapperClassName || ''}`}
         {...wrapperProps}
       >
         {
-          (isRepeating || currentIndex > 0) &&
+          (isRepeating || currentIndex > 0) ?
             renderPreviousButton ?
             renderPreviousButton(previousItem, 'left-arrow-button')
             :
-            <button onClick={previousItem} className="left-arrow-button">
+            <button
+              data-testid="left-button"
+              onClick={previousItem}
+              className="left-arrow-button"
+            >
               <span className="left-arrow" />
             </button>
+          : null
         }
         <div
+          data-testid="carousel-content-wrapper"
           className={`carousel-content-wrapper ${contentWrapperClassName || ''}`}
           {...contentWrapperProps}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
         >
           <div
+            data-testid="carousel-content"
             className={`carousel-content show-${show} ${contentClassName || ''}`}
             {...contentProps}
             style={{
@@ -388,18 +397,24 @@ const Carousel = ({
           </div>
         </div>
         {
-          (isRepeating || currentIndex < (length - show)) &&
+          (isRepeating || currentIndex < (length - show)) ?
             renderNextButton ?
             renderNextButton(nextItem, 'right-arrow-button')
             :
-            <button onClick={nextItem} className="right-arrow-button">
+            <button
+              data-testid="right-button"
+              onClick={nextItem}
+              className="right-arrow-button"
+            >
               <span className="right-arrow" />
             </button>
+          : null
         }
       </div>
       {
         withIndicator &&
         <div
+          data-testid="indicator-container"
           ref={indicatorContainerRef}
           className={`indicator-container ${indicatorContainerClassName || ''}`}
           {...indicatorContainerProps}
