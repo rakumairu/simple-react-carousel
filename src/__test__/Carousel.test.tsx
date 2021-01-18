@@ -1,8 +1,6 @@
 import React from 'react'
-import { render, cleanup } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import Carousel from '../components/Carousel/Carousel'
-
-afterEach(cleanup)
 
 it('render 2 items with next button', () => {
     const { getAllByTestId, getByTestId } = render(
